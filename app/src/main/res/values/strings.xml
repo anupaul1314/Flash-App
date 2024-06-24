@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Flash</string>
+    <string name="sweet_tooth">Flash</string>
+    <string name="stationary">Flash</string>
+    <string name="pet_Food">Flash</string>
+    <string name="packaged_food">Flash</string>
+    <string name="munchies">Flash</string>
+    <string name="vegetables">Flash</string>
+    <string name="bread">Flash</string>
 </resources>
