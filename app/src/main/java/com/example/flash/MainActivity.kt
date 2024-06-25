@@ -23,23 +23,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Surface (
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-                ){
-                LazyColumn {
-                    items(50){index->
-                        Text(text = "Items : ${index}")
-                    }
-                }
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(128.dp)
-                ) {
-                    items(50){index->
-                        Text(text = "Items:$index")
-                    }
-                }
-            }
 
         }
     }
