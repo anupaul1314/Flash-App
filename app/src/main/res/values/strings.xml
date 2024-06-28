@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Flash</string>
-    <string name="fruits">Flash</string>
-    <string name="munchies">Flash</string>
-    <string name="vegetables">Flash</string>
-    <string name="bread">Flash</string>
+    <string name="app_name">FlashCart</string>
+    <string name="Fruits">Fruits</string>
+    <string name="Munchies">Munchies</string>
+    <string name="Vegetables">Vegetables</string>
+    <string name="Bread">Bread</string>
 </resources>

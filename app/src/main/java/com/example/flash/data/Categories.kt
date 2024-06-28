@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.annotation.DrawableRes
 
 data class Categories (
-    @StringRes val stringResource :Int,
-    @DrawableRes val imageResource : Int
+    @StringRes val stringResourceId :Int,
+    @DrawableRes val imageResourceId : Int
 )
 
