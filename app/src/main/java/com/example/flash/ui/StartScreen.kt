@@ -17,6 +17,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -29,20 +31,24 @@ import androidx.lifecycle.ViewModel
 import com.example.flash.data.DataSource
 
 @Composable
-fun StartScreen(){
+fun StartScreen(flashViewModal: FlashViewModal){
     val context = LocalContext.current
-    //val flashUiState by FlashViewModel.uiState.collectAsState()
+    val flashUiState by flashViewModal.uiState.collectAsState()
     LazyVerticalGrid(
         columns = GridCells.Adaptive(128.dp),
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        item {
+            Text(text = flashUiState.clickStatus)
+        }
                 items(DataSource.loadCategories()){
                     CategoryCard(
                         context = context,
                         stringResourceId = it.stringResourceId,
-                        imageResourceId = it.imageResourceId
+                        imageResourceId = it.imageResourceId,
+                        flashViewModal = flashViewModal
                     )
                 }
     }
@@ -51,13 +57,16 @@ fun StartScreen(){
 fun CategoryCard(
     context:Context,
     stringResourceId:Int,
-    imageResourceId:Int
+    imageResourceId:Int,
+    flashViewModal: FlashViewModal
 ){
+    val categoryName = stringResource(id = stringResourceId)
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White),
         modifier = Modifier
             .clickable {
+                flashViewModal.updateClickText(categoryName)
                 Toast.makeText(
                     context, "This card was clicked",
                     Toast.LENGTH_SHORT).show()
@@ -69,7 +78,7 @@ fun CategoryCard(
                 .padding(start = 5.dp)
         ) {
             Text(
-                text = stringResource(id = stringResourceId),
+                text = categoryName,
                 fontSize = 24.sp,
                 modifier = Modifier.width(150.dp)
             )
@@ -86,5 +95,5 @@ fun CategoryCard(
 @Preview(showSystemUi = true)
 @Composable
 fun GreetingPreview() {
-   StartScreen()
+   StartScreen(flashViewModal = FlashViewModal())
 }

@@ -6,8 +6,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
-fun FlashApp(){
-    StartScreen()
+fun FlashApp(flashViewModal: FlashViewModal = viewModel()){
+    StartScreen(flashViewModal = flashViewModal)
 }
 
 
