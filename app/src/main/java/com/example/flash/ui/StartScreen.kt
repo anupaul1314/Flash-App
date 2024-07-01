@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import com.example.flash.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -31,7 +30,7 @@ import androidx.lifecycle.ViewModel
 import com.example.flash.data.DataSource
 
 @Composable
-fun StartScreen(flashViewModal: FlashViewModal){
+fun StartScreen(flashViewModal: ViewModel){
     val context = LocalContext.current
     val flashUiState by flashViewModal.uiState.collectAsState()
     LazyVerticalGrid(
@@ -58,7 +57,7 @@ fun CategoryCard(
     context:Context,
     stringResourceId:Int,
     imageResourceId:Int,
-    flashViewModal: FlashViewModal
+    flashViewModal: ViewModel
 ){
     val categoryName = stringResource(id = stringResourceId)
     Card(
