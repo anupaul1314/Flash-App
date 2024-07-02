@@ -30,7 +30,7 @@ import androidx.lifecycle.ViewModel
 import com.example.flash.data.DataSource
 
 @Composable
-fun StartScreen(flashViewModal: ViewModel){
+fun StartScreen(flashViewModal: FlashViewModal){
     val context = LocalContext.current
     val flashUiState by flashViewModal.uiState.collectAsState()
     LazyVerticalGrid(
@@ -57,19 +57,18 @@ fun CategoryCard(
     context:Context,
     stringResourceId:Int,
     imageResourceId:Int,
-    flashViewModal: ViewModel
+    flashViewModal: FlashViewModal
 ){
     val categoryName = stringResource(id = stringResourceId)
     Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White),
-        modifier = Modifier
-            .clickable {
-                flashViewModal.updateClickText(categoryName)
+        modifier = Modifier.clickable {
+            flashViewModal.updateClickText(categoryName)
                 Toast.makeText(
-                    context, "This card was clicked",
+                    context, "This $categoryName was added in cart",
                     Toast.LENGTH_SHORT).show()
             },
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White)
         )
     {
         Column(
