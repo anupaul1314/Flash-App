@@ -30,7 +30,10 @@ import androidx.lifecycle.ViewModel
 import com.example.flash.data.DataSource
 
 @Composable
-fun StartScreen(flashViewModal: FlashViewModal){
+fun StartScreen(
+    flashViewModal: FlashViewModal,
+    onCategoryClicked: (String) -> Unit
+){
     val context = LocalContext.current
     val flashUiState by flashViewModal.uiState.collectAsState()
     LazyVerticalGrid(
@@ -39,15 +42,13 @@ fun StartScreen(flashViewModal: FlashViewModal){
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        item {
-            Text(text = flashUiState.clickStatus)
-        }
                 items(DataSource.loadCategories()){
                     CategoryCard(
                         context = context,
                         stringResourceId = it.stringResourceId,
                         imageResourceId = it.imageResourceId,
-                        flashViewModal = flashViewModal
+                        flashViewModal = flashViewModal,
+                        onCategoryClicked = onCategoryClicked
                     )
                 }
     }
@@ -57,15 +58,15 @@ fun CategoryCard(
     context:Context,
     stringResourceId:Int,
     imageResourceId:Int,
-    flashViewModal: FlashViewModal
+    flashViewModal: FlashViewModal,
+    onCategoryClicked: (String) -> Unit
 ){
     val categoryName = stringResource(id = stringResourceId)
     Card(
         modifier = Modifier.clickable {
             flashViewModal.updateClickText(categoryName)
-                Toast.makeText(
-                    context, "This $categoryName was added in cart",
-                    Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "This $categoryName was added in cart", Toast.LENGTH_SHORT).show()
+            onCategoryClicked(categoryName)
             },
         colors = CardDefaults.cardColors(
             containerColor = Color.White)
@@ -93,5 +94,8 @@ fun CategoryCard(
 @Preview(showSystemUi = true)
 @Composable
 fun GreetingPreview() {
-   StartScreen(flashViewModal = FlashViewModal())
+   StartScreen(
+       flashViewModal = FlashViewModal(),
+       onCategoryClicked = {}
+   )
 }

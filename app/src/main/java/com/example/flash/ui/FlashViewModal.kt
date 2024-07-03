@@ -17,4 +17,13 @@ class FlashViewModal: ViewModel() {
             )
         }
     }
+
+    fun updateSelectedCategory(updatedCategory:String){
+        _uistate.update {
+            it.copy(
+                selectedCategory = updatedCategory
+            )
+        }
+    }
 }
+
