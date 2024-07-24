@@ -2,6 +2,7 @@ package com.example.flash.ui
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -84,7 +86,8 @@ fun CategoryCard(
         }
         Image(
             modifier = Modifier
-                .size(150.dp),
+                .size(150.dp)
+                .background(Color.White),
             painter = painterResource(imageResourceId) ,
             contentDescription ="Fresh Fruits"
         )
