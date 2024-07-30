@@ -1,5 +1,8 @@
 package com.example.flash.ui
 
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +26,26 @@ fun FlashApp(
    ){
     val isVisible by flashViewModal._isVisible.collectAsState()
     val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = FlashAppScreen.values(
+        backStackEntry?.destination?.route ?: FlashAppScreen.Start.name
+    )
+    canNavigateBack = navController.previousBackStackEntry ! = null
+
+    if (isVisible){
+        OfferScren()
+    }else{
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = currentScreen)
+                }
+                )
+            }
+        ) {
+
+        }
+    }
     NavHost(navController = navController, startDestination = FlashAppScreen.Start.name ) {
         composable(route = FlashAppScreen.Start.name){
             StartScreen(
