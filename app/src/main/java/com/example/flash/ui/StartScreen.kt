@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,12 +20,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +37,7 @@ import com.example.flash.data.DataSource
 @Composable
 fun StartScreen(
     flashViewModal: FlashViewModal,
-    onCategoryClicked: (String) -> Unit
+    onCategoryClicked: (Int) -> Unit
 ){
     val context = LocalContext.current
     val flashUiState by flashViewModal.uiState.collectAsState()
@@ -61,14 +64,14 @@ fun CategoryCard(
     stringResourceId:Int,
     imageResourceId:Int,
     flashViewModal: FlashViewModal,
-    onCategoryClicked: (String) -> Unit
+    onCategoryClicked: (Int) -> Unit
 ){
     val categoryName = stringResource(id = stringResourceId)
     Card(
         modifier = Modifier.clickable {
             flashViewModal.updateClickText(categoryName)
             Toast.makeText(context, "This $categoryName was added in cart", Toast.LENGTH_SHORT).show()
-            onCategoryClicked(categoryName)
+                onCategoryClicked(stringResourceId)
             },
         colors = CardDefaults.cardColors(
             containerColor = Color.White)
@@ -77,20 +80,25 @@ fun CategoryCard(
         Column(
             modifier = Modifier
                 .padding(start = 5.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 text = categoryName,
                 fontSize = 24.sp,
-                modifier = Modifier.width(150.dp)
+                textAlign = TextAlign.Center
+            )
+            Image(
+                modifier = Modifier
+                    .size(150.dp)
+                    .background(Color.White),
+                painter = painterResource(imageResourceId) ,
+                contentDescription ="Fresh Fruits"
             )
         }
-        Image(
-            modifier = Modifier
-                .size(150.dp)
-                .background(Color.White),
-            painter = painterResource(imageResourceId) ,
-            contentDescription ="Fresh Fruits"
-        )
+
     }
 }
 

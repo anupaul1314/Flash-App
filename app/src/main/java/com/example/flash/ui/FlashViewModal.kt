@@ -25,7 +25,7 @@ class FlashViewModal: ViewModel() {
         }
     }
 
-    fun updateSelectedCategory(updatedCategory:String){
+    fun updateSelectedCategory(updatedCategory: Int){
         _uistate.update {
             it.copy(
                 selectedCategory = updatedCategory
