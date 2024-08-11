@@ -1,5 +1,6 @@
 package com.example.flash.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -84,7 +85,7 @@ fun FlashApp(
             )
         },
         bottomBar = {
-            FlashAppBar()
+            FlashAppBar(navController = navController)
         }
     ) {
         NavHost(
@@ -109,7 +110,7 @@ fun FlashApp(
 }
 
 @Composable
-fun FlashAppBar() {
+fun FlashAppBar(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -120,6 +121,12 @@ fun FlashAppBar() {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
+            modifier = Modifier
+                .clickable {
+                           navController.navigate(FlashAppScreen.Start.name){
+                               popUpTo(0)
+                           }
+                },
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
@@ -133,6 +140,12 @@ fun FlashAppBar() {
             )
         }
         Column(
+            modifier = Modifier
+                .clickable {
+                    navController.navigate(FlashAppScreen.Start.name){
+                        popUpTo(0)
+                    }
+                },
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
