@@ -48,62 +48,64 @@ fun FlashApp(
     flashViewModal: FlashViewModal = viewModel(),
     navController: NavHostController = rememberNavController()
    ) {
-    val isVisible by flashViewModal._isVisible.collectAsState()
-    if (isVisible) {
-        OfferScren()
-    }
 
+    val isVisible by flashViewModal._isVisible.collectAsState()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = FlashAppScreen.valueOf(
         backStackEntry?.destination?.route ?: FlashAppScreen.Start.name
     )
     canNavigateBack = navController.previousBackStackEntry != null
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = currentScreen.title,
-                        fontSize = 26.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.Gray
-                    )
-                },
-                navigationIcon = {
-                    if (canNavigateBack){
-                        IconButton(onClick = {
-                            navController.navigateUp()
-                        }) {
-                            Icon(
-                                imageVector = Icons.Outlined.ArrowBack,
-                                contentDescription = "Back Button"
-                            )
+
+    if (isVisible) {
+        OfferScren()
+    }else {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = currentScreen.title,
+                            fontSize = 26.sp,
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.Gray
+                        )
+                    },
+                    navigationIcon = {
+                        if (canNavigateBack){
+                            IconButton(onClick = {
+                                navController.navigateUp()
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.ArrowBack,
+                                    contentDescription = "Back Button"
+                                )
+                            }
                         }
                     }
-                }
-            )
-        },
-        bottomBar = {
-            FlashAppBar(navController = navController)
-        }
-    ) {
-        NavHost(
-            navController = navController,
-            startDestination = FlashAppScreen.Start.name,
-            Modifier.padding(it)
-        ) {
-            composable(route = FlashAppScreen.Start.name) {
-                StartScreen(
-                    flashViewModal = flashViewModal,
-                    onCategoryClicked = {
-                        flashViewModal.updateSelectedCategory(it)
-                        navController.navigate(FlashAppScreen.Items.name)
-                    }
                 )
+            },
+            bottomBar = {
+                FlashAppBar(navController = navController)
             }
-            composable(route = FlashAppScreen.Items.name) {
-                ItemsScreen(flashViewModal = flashViewModal)
+        ) {
+            NavHost(
+                navController = navController,
+                startDestination = FlashAppScreen.Start.name,
+                Modifier.padding(it)
+            ) {
+                composable(route = FlashAppScreen.Start.name) {
+                    StartScreen(
+                        flashViewModal = flashViewModal,
+                        onCategoryClicked = {
+                            flashViewModal.updateSelectedCategory(it)
+                            navController.navigate(FlashAppScreen.Items.name)
+                        }
+                    )
+                }
+                composable(route = FlashAppScreen.Items.name) {
+                    ItemsScreen(flashViewModal = flashViewModal)
+                }
             }
         }
     }
