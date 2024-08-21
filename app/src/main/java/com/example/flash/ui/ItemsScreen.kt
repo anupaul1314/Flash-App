@@ -62,6 +62,20 @@ fun ItemsScreen(flashViewModal: FlashViewModal){
 }
 
 @Composable
+fun InternetItemsScreen(
+    flashViewModal: FlashViewModal,
+    itemUiState: FlashViewModal.ItemUiState
+) {
+    when (itemUiState) {
+        is FlashViewModal.ItemUiState.Loading -> {}
+        is FlashViewModal.ItemUiState.Success -> {
+            Text(text = itemUiState.items)
+        }
+        else -> {}
+    }
+}
+
+@Composable
 fun ItemCard(
     stringResourceId: Int,
     imageResourceId: Int,

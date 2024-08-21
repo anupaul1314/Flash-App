@@ -56,7 +56,7 @@ fun FlashApp(
     )
     canNavigateBack = navController.previousBackStackEntry != null
 
-    if (isVisible) {
+        if (isVisible) {
         OfferScren()
     }else {
         Scaffold(
@@ -104,7 +104,10 @@ fun FlashApp(
                     )
                 }
                 composable(route = FlashAppScreen.Items.name) {
-                    ItemsScreen(flashViewModal = flashViewModal)
+                    InternetItemsScreen(
+                        flashViewModal = flashViewModal,
+                        itemUiState = flashViewModal.itemUiState
+                    )
                 }
             }
         }
