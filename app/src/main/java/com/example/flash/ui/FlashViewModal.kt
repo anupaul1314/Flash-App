@@ -1,10 +1,14 @@
 package com.example.flash.ui
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.flash.data.InternetItems
 import com.example.flash.network.FlashApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.prefs.Preferences
 
 class FlashViewModal: ViewModel() {
     private val _uistate = MutableStateFlow(FlashUiState())
@@ -25,13 +30,25 @@ class FlashViewModal: ViewModel() {
     var itemUiState:ItemUiState by mutableStateOf(ItemUiState.Loading)
         private set
 
+    private val _cartItems = MutableStateFlow<List<InternetItems>>(emptyList())
+    val cartItems: StateFlow<List<InternetItems>> get() = _cartItems.asStateFlow()
+
+//    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "cart")
+
     lateinit var internetJob:Job
     lateinit var screenJob:Job
 
     sealed interface ItemUiState {
-        data class Success(val items:String): ItemUiState
+        data class Success(val items: List<InternetItems>): ItemUiState
         object Loading: ItemUiState
         object Error: ItemUiState
+    }
+
+    fun addToCart(items: InternetItems) {
+        _cartItems.value = _cartItems.value + items
+    }
+    fun removeFromCart(items: InternetItems) {
+        _cartItems.value = _cartItems.value - items
     }
 
     fun updateClickText(updatedText:String){
