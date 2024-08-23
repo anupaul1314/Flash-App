@@ -120,7 +120,7 @@ fun CartScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_flashcart),
+                painter = painterResource(id = R.drawable.ic_app_icon),
                 contentDescription = "App Icon"
             )
             
