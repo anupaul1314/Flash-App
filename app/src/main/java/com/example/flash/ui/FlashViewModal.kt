@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
@@ -33,7 +34,7 @@ class FlashViewModal: ViewModel() {
     private val _cartItems = MutableStateFlow<List<InternetItems>>(emptyList())
     val cartItems: StateFlow<List<InternetItems>> get() = _cartItems.asStateFlow()
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "cart")
+    private val Context.dataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(name = "cart")
 
 
     private val _phoneNumber = MutableStateFlow("")
