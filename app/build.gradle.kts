@@ -3,6 +3,7 @@
     alias(libs.plugins.jetbrainsKotlinAndroid)
 
      id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+     id("com.google.gms.google-services")
 
  }
 
@@ -81,5 +82,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("androidx.datastore:datastore:1.0.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }
