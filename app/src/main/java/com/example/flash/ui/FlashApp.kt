@@ -39,13 +39,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.flash.data.InternetItems
+import com.google.firebase.auth.FirebaseAuth
 
 enum class FlashAppScreen(val title:String) {
     Start("FlashCart"),
     Items("Choose Items"),
     Cart("Your Cart")
 }
-
+val auth = FirebaseAuth.getInstance()
 var canNavigateBack = false
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,17 +55,21 @@ fun FlashApp(
     flashViewModal: FlashViewModal = viewModel(),
     navController: NavHostController = rememberNavController()
    ) {
+    val user by flashViewModal.user.collectAsState()
     val isVisible by flashViewModal._isVisible.collectAsState()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = FlashAppScreen.valueOf(
         backStackEntry?.destination?.route ?: FlashAppScreen.Start.name
     )
-     canNavigateBack = navController.previousBackStackEntry != null
+    canNavigateBack = navController.previousBackStackEntry != null
     val cartItems by flashViewModal.cartItems.collectAsState()
 
         if (isVisible) {
         OfferScren()
-    }else {
+        } else if (user==null) {
+            LoginUi(flashViewModal = flashViewModal)
+        }
+        else {
         Scaffold(
             topBar = {
                 TopAppBar(

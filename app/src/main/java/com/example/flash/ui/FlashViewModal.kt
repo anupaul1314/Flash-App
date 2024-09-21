@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flash.data.InternetItems
 import com.example.flash.network.FlashApi
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -31,14 +32,22 @@ class FlashViewModal: ViewModel() {
     var itemUiState:ItemUiState by mutableStateOf(ItemUiState.Loading)
         private set
 
-    private val _cartItems = MutableStateFlow<List<InternetItems>>(emptyList())
-    val cartItems: StateFlow<List<InternetItems>> get() = _cartItems.asStateFlow()
-
-    private val Context.dataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(name = "cart")
-
+    private val _user = MutableStateFlow<FirebaseUser?> (null)
+    val user: MutableStateFlow<FirebaseUser?> get() = _user
 
     private val _phoneNumber = MutableStateFlow("")
     val phoneNumber: MutableStateFlow<String> get() = _phoneNumber
+
+    private val _cartItems = MutableStateFlow<List<InternetItems>>(emptyList())
+    val cartItems: StateFlow<List<InternetItems>> get() = _cartItems.asStateFlow()
+
+    private val _otp = MutableStateFlow("")
+    val otp: MutableStateFlow<String> get() = _otp
+
+    private val _verificationId = MutableStateFlow("")
+    val verificationId: MutableStateFlow<String> get() = _verificationId
+
+    private val Context.dataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(name = "cart")
 
     lateinit var internetJob:Job
     lateinit var screenJob:Job
@@ -47,6 +56,18 @@ class FlashViewModal: ViewModel() {
         data class Success(val items: List<InternetItems>): ItemUiState
         object Loading: ItemUiState
         object Error: ItemUiState
+    }
+
+    fun setPhoneNumber(phoneNumber: String) {
+        _phoneNumber.value = phoneNumber
+    }
+
+    fun setOtp(otp:String) {
+        _otp.value = otp
+    }
+
+    fun setVerifiactionId(verificationId: String) {
+        _verificationId.value = verificationId
     }
 
     fun addToCart(items: InternetItems) {
