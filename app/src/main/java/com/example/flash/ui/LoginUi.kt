@@ -47,6 +47,7 @@ fun LoginUi(
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken,
         ) {
+            flashViewModal.setVerifiactionId(verificationId)
             Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show()
         }
     }
@@ -64,7 +65,11 @@ fun LoginUi(
             painter = painterResource(id = R.drawable.ic_app_icon),
             contentDescription = "App Icon"
         )
-        NumberScreen(flashViewModal = flashViewModal,callbacks= callbacks)
+        if (verificationId.isEmpty()) {
+            NumberScreen(flashViewModal = flashViewModal,callbacks= callbacks)
+        } else {
+            OtpScreen(flashViewModal = flashViewModal, otp = otp)
+        }
     }
 }
 
