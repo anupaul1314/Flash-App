@@ -56,6 +56,7 @@ fun FlashApp(
     navController: NavHostController = rememberNavController()
    ) {
     val user by flashViewModal.user.collectAsState()
+    auth.currentUser?.let { flashViewModal.setUser(it) }
     val isVisible by flashViewModal._isVisible.collectAsState()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = FlashAppScreen.valueOf(
@@ -64,9 +65,9 @@ fun FlashApp(
     canNavigateBack = navController.previousBackStackEntry != null
     val cartItems by flashViewModal.cartItems.collectAsState()
 
-        if (isVisible) {
+    if (isVisible) {
         OfferScren()
-        } else if (user==null) {
+        } else if (user == null) {
             LoginUi(flashViewModal = flashViewModal)
         }
         else {

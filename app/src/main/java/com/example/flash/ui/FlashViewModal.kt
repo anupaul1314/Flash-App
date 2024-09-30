@@ -23,29 +23,6 @@ import kotlinx.coroutines.launch
 import java.util.prefs.Preferences
 
 class FlashViewModal: ViewModel() {
-    private val _uistate = MutableStateFlow(FlashUiState())
-    val uiState:StateFlow<FlashUiState> = _uistate.asStateFlow()
-
-    val _isVisible = MutableStateFlow<Boolean>(true)
-    val isVisible = _isVisible
-
-    var itemUiState:ItemUiState by mutableStateOf(ItemUiState.Loading)
-        private set
-
-    private val _user = MutableStateFlow<FirebaseUser?> (null)
-    val user: MutableStateFlow<FirebaseUser?> get() = _user
-
-    private val _phoneNumber = MutableStateFlow("")
-    val phoneNumber: MutableStateFlow<String> get() = _phoneNumber
-
-    private val _cartItems = MutableStateFlow<List<InternetItems>>(emptyList())
-    val cartItems: StateFlow<List<InternetItems>> get() = _cartItems.asStateFlow()
-
-    private val _otp = MutableStateFlow("")
-    val otp: MutableStateFlow<String> get() = _otp
-
-    private val _verificationId = MutableStateFlow("")
-    val verificationId: MutableStateFlow<String> get() = _verificationId
 
     private val Context.dataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(name = "cart")
 
@@ -58,17 +35,33 @@ class FlashViewModal: ViewModel() {
         object Error: ItemUiState
     }
 
+    private val _user = MutableStateFlow<FirebaseUser?> (null)
+    val user: MutableStateFlow<FirebaseUser?> get() = _user
+    fun setUser(user: FirebaseUser) {
+        _user.value = user
+    }
+
+
+    private val _phoneNumber = MutableStateFlow("")
+    val phoneNumber: MutableStateFlow<String> get() = _phoneNumber
     fun setPhoneNumber(phoneNumber: String) {
         _phoneNumber.value = phoneNumber
     }
 
+    private val _otp = MutableStateFlow("")
+    val otp: MutableStateFlow<String> get() = _otp
     fun setOtp(otp:String) {
         _otp.value = otp
     }
 
+    private val _verificationId = MutableStateFlow("")
+    val verificationId: MutableStateFlow<String> get() = _verificationId
     fun setVerifiactionId(verificationId: String) {
         _verificationId.value = verificationId
     }
+
+    private val _cartItems = MutableStateFlow<List<InternetItems>>(emptyList())
+    val cartItems: StateFlow<List<InternetItems>> get() = _cartItems.asStateFlow()
 
     fun addToCart(items: InternetItems) {
         _cartItems.value = _cartItems.value + items
@@ -77,6 +70,8 @@ class FlashViewModal: ViewModel() {
         _cartItems.value = _cartItems.value - items
     }
 
+    private val _uistate = MutableStateFlow(FlashUiState())
+    val uiState:StateFlow<FlashUiState> = _uistate.asStateFlow()
     fun updateClickText(updatedText:String){
         _uistate.update {
             it.copy(
@@ -93,9 +88,15 @@ class FlashViewModal: ViewModel() {
         }
     }
 
+    val _isVisible = MutableStateFlow<Boolean>(true)
+    val isVisible = _isVisible
+
     fun toggleVisibility() {
         _isVisible.value = false
     }
+
+    var itemUiState:ItemUiState by mutableStateOf(ItemUiState.Loading)
+        private set
 
     fun getFlashItems() {
         internetJob = viewModelScope.launch {
@@ -117,5 +118,6 @@ class FlashViewModal: ViewModel() {
         }
         getFlashItems()
     }
+
 }
 
