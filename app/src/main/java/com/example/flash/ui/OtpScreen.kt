@@ -3,9 +3,11 @@ package com.example.flash.ui
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,20 +29,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.common.util.DataUtils
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun OtpScreen(
     otp: String,
-    flashViewModal: FlashViewModal
+    flashViewModal: FlashViewModal,
+    callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks,
 ) {
     val context = LocalContext.current
+
     val verificationId by flashViewModal.verificationId.collectAsState()
+
+    val timer by flashViewModal.timer.collectAsState()
+
+    val phoneNumber by flashViewModal.phoneNumber.collectAsState()
+
     OtpTextBox(otp = otp, flashViewModal = flashViewModal)
+
+
 
     Button(
         modifier = Modifier.fillMaxWidth(),
@@ -55,6 +70,21 @@ fun OtpScreen(
     ) {
         Text(text = "Verify OTP")
     }
+    Text(
+        modifier = Modifier
+            .clickable {
+                val options = PhoneAuthOptions.newBuilder(auth)
+                    .setPhoneNumber("+91 ${phoneNumber}") // Phone number to Verify
+                    .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                    .setActivity(context as Activity) // Activity (for callback binding)
+                    .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+                    .build()
+                PhoneAuthProvider.verifyPhoneNumber(options)
+            },
+        text = if (timer == 0L) "Resend OTP" else "Resend OTP(${DateUtils.formatElapsedTime(timer)})",
+        color = Color(63,81,181,255),
+        fontWeight = if (timer == 0L) FontWeight.Bold else FontWeight.Normal
+    )
 }
 
 @Composable
@@ -94,9 +124,7 @@ fun OtpTextBox(
                             .width(40.dp)
                             .height(2.dp)
                             .background(Color.Gray)
-                    ) {
-
-                    }
+                    )
                 }
             }
         }

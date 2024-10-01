@@ -39,9 +39,3 @@ fun OfferScren(){
 
     }
 }
-
-@Preview
-@Composable
-private fun vdbbvkjs() {
-    OfferScren()
-}

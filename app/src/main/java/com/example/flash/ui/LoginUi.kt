@@ -4,16 +4,25 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,32 +58,53 @@ fun LoginUi(
         ) {
             flashViewModal.setVerifiactionId(verificationId)
             Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show()
+            flashViewModal.resetTimer()
+            flashViewModal.runTimer()
         }
     }
-    Column (
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
+    Box {
+        Column(
             modifier = Modifier
-                .padding(top = 50.dp, bottom = 10.dp)
-                .size(100.dp),
-            painter = painterResource(id = R.drawable.ic_app_icon),
-            contentDescription = "App Icon"
-        )
-        if (verificationId.isEmpty()) {
-            NumberScreen(flashViewModal = flashViewModal,callbacks= callbacks)
-        } else {
-            OtpScreen(flashViewModal = flashViewModal, otp = otp)
+                .padding(horizontal = 20.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                modifier = Modifier
+                    .padding(top = 50.dp, bottom = 10.dp)
+                    .size(100.dp),
+                painter = painterResource(id = R.drawable.ic_app_icon),
+                contentDescription = "App Icon"
+            )
+            if (verificationId.isEmpty()) {
+                NumberScreen(flashViewModal = flashViewModal, callbacks = callbacks)
+            } else {
+                OtpScreen(flashViewModal = flashViewModal, otp = otp, callbacks = callbacks)
+            }
         }
-    }
-}
+        if (verificationId.isNotEmpty()) {
+            IconButton(
+                onClick = {
+                    flashViewModal.setVerifiactionId("")
+                    flashViewModal.setOtp("")
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack, contentDescription = ""
+                )
+            }
+        }
 
-@Preview
-@Composable
-private fun vjscksdc() {
-    LoginUi(flashViewModal = FlashViewModal())
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(Color(255, 255, 255, 190)),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            CircularProgressIndicator()
+//            Text(text = "Loading")
+//        }
+    }
 }

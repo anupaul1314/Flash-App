@@ -30,5 +30,4 @@ object FlashApi {
             FlashApiService::class.java
         )
     }
-
 }
